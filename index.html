@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Stavros Vailakis analogue street photography portfolio and visual archive."
+    />
+    <title>Stavros Vailakis | Analogue Street Photography</title>
+    <link rel="stylesheet" href="./styles.css?v=20" />
+  </head>
+  <body>
+    <div class="page-shell" id="top">
+      <aside class="sidebar" aria-label="Portfolio navigation">
+        <a class="brand" href="#top" aria-label="Stavros Vailakis home">
+          STAVROS<br />VAILAKIS
+        </a>
+
+        <nav class="side-nav" aria-label="Portfolio sections">
+          <div class="nav-group">
+            <a href="./index.html">portfolio <span>-</span></a>
+            <a class="sub-link" href="./index.html">analogue</a>
+            <a class="sub-link" href="./index.html">street</a>
+          </div>
+          <a href="./archive.html">archive <span>+</span></a>
+          <a href="./about.html">about/contact <span>+</span></a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a class="share-link" href="./about.html" aria-label="About this work">↗</a>
+        </div>
+      </aside>
+
+      <main class="content home-content">
+        <section id="portfolio" class="photo-grid" aria-label="Photography portfolio">
+          <figure class="photo-card">
+            <button
+              class="photo-open"
+              type="button"
+              data-full="./assets/photos/leof-04.jpg"
+              data-caption="Sofia, train station, 2019"
+              aria-label="Open photograph"
+            >
+              <img
+                src="./assets/photos/leof-04-web.jpg"
+                alt="Analogue black and white photograph of a quiet railway platform"
+              />
+            </button>
+          </figure>
+        </section>
+
+        <footer class="site-footer home-footer">
+          © <span id="year"></span> Stavros Vailakis
+        </footer>
+      </main>
+    </div>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Expanded photograph">
+      <button class="lightbox-close" type="button" aria-label="Close photograph">×</button>
+      <figure class="lightbox-frame">
+        <img src="" alt="" />
+        <figcaption></figcaption>
+      </figure>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
