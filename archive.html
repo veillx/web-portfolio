@@ -8,31 +8,35 @@
       content="Archive of Stavros Vailakis analogue street photography."
     />
     <title>Archive | Stavros Vailakis</title>
-    <link rel="stylesheet" href="./styles.css?v=18" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=89" />
   </head>
-  <body>
-    <div class="page-shell" id="top">
-      <aside class="sidebar" aria-label="Portfolio navigation">
-        <a class="brand" href="./index.html" aria-label="Stavros Vailakis home">
+  <body class="federico-inner">
+    <div class="federico-page" id="top">
+      <header class="federico-header">
+        <a class="federico-brand" href="./index.html" aria-label="Stavros Vailakis home">
           STAVROS<br />VAILAKIS
         </a>
 
-        <nav class="side-nav" aria-label="Portfolio sections">
-          <div class="nav-group">
-            <a href="./index.html">portfolio <span>-</span></a>
-            <a class="sub-link" href="./index.html">analogue</a>
-            <a class="sub-link" href="./index.html">street</a>
-          </div>
-          <a href="./archive.html">archive <span>-</span></a>
-          <a href="./about.html">about/contact <span>+</span></a>
-        </nav>
-
-        <div class="sidebar-footer">
-          <a class="share-link" href="./index.html" aria-label="Back to index">↗</a>
+        <div class="location-bar" aria-label="Current location and local time">
+          <span>location: Heraklion, Crete</span>
+          <time id="localTime" datetime=""></time>
         </div>
-      </aside>
 
-      <main class="content page-content">
+        <nav class="federico-nav" aria-label="Portfolio navigation">
+          <a href="./index.html">portfolio</a>
+          <a href="./archive.html">archive</a>
+          <a class="strike-link" href="./commercial.html">commercial</a>
+          <a href="./about.html">about/contact</a>
+        </nav>
+      </header>
+
+      <main class="federico-main page-content inner-content">
         <section class="text-section page-text">
           <p class="kicker">archive</p>
           <h1>Work in progress.</h1>
