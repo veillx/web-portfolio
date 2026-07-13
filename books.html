@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Street Roving - Sofia, Bulgaria, a photobook by Stavros Vailakis."
+    />
+    <title>Street Roving - Sofia, Bulgaria | Stavros Vailakis</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=124" />
+  </head>
+  <body class="federico-inner books-page">
+    <div class="federico-page" id="top">
+      <header class="federico-header">
+        <a class="federico-brand" href="./index.html" aria-label="Stavros Vailakis home">
+          STAVROS<br />VAILAKIS
+        </a>
+
+        <div class="location-bar" aria-label="Current location and local time">
+          <span>location: Heraklion, Crete</span>
+          <time id="localTime" datetime=""></time>
+        </div>
+
+        <nav class="federico-nav" aria-label="Portfolio navigation">
+          <span class="archive-menu">
+            <a href="./archive.html">archive</a>
+            <a class="archive-sub-link" href="./books.html">street roving - sofia, bulgaria</a>
+          </span>
+          <a class="strike-link" href="./commercial.html">commercial</a>
+          <a href="./about.html">about/contact</a>
+        </nav>
+      </header>
+
+      <main class="federico-main page-content books-content">
+        <section class="book-section" aria-label="Street Roving - Sofia, Bulgaria">
+          <div class="book-heading">
+            <p class="kicker">archive</p>
+            <h1>street roving - sofia, bulgaria</h1>
+            <p>Stavros Vailakis</p>
+          </div>
+
+          <article
+            class="book-viewer"
+            data-pdf="./assets/books/photobook-thesis-stavros-vailakis.pdf"
+            data-title="Street Roving - Sofia, Bulgaria"
+          >
+            <div class="book-meta">
+              <span class="book-status" data-book-status>loading book</span>
+              <span class="book-counter" data-book-counter>-- / --</span>
+            </div>
+
+            <div class="book-spread" aria-label="Book spread">
+              <div class="book-page">
+                <canvas data-book-canvas-left></canvas>
+              </div>
+              <div class="book-page">
+                <canvas data-book-canvas-right></canvas>
+              </div>
+            </div>
+
+            <div class="book-controls">
+              <button type="button" data-book-prev>prev</button>
+              <button type="button" data-book-next>next</button>
+              <a href="./assets/books/photobook-thesis-stavros-vailakis.pdf" download>
+                download pdf
+              </a>
+            </div>
+
+            <noscript>
+              <p>
+                <a href="./assets/books/photobook-thesis-stavros-vailakis.pdf">
+                  open pdf
+                </a>
+              </p>
+            </noscript>
+          </article>
+        </section>
+
+        <footer class="site-footer">
+          © <span id="year"></span> Stavros Vailakis
+        </footer>
+      </main>
+    </div>
+
+    <div class="book-lightbox" id="bookLightbox" aria-hidden="true" role="dialog" aria-label="Expanded book page">
+      <button class="book-lightbox-close" type="button" data-book-lightbox-close aria-label="Close book page">×</button>
+      <button class="book-lightbox-nav book-lightbox-prev" type="button" data-book-lightbox-prev aria-label="Previous page">prev</button>
+      <button class="book-lightbox-nav book-lightbox-next" type="button" data-book-lightbox-next aria-label="Next page">next</button>
+      <figure class="book-lightbox-frame">
+        <canvas data-book-lightbox-canvas></canvas>
+        <figcaption data-book-lightbox-caption></figcaption>
+      </figure>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="./script.js?v=124"></script>
+  </body>
+</html>
