@@ -567,7 +567,7 @@ img {
   left: auto;
   grid-column: 1 / -1;
   justify-self: center;
-  width: min(58%, 540px);
+  width: min(68%, 620px);
   margin-top: 0;
   transform: none;
 }
