@@ -1,433 +1,166 @@
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const localTime = document.getElementById("localTime");
-
-function updateLocalTime() {
-  if (!localTime) {
-    return;
-  }
-
-  const now = new Date();
-  localTime.textContent = new Intl.DateTimeFormat("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Europe/Athens",
-  }).format(now);
-  localTime.dateTime = now.toISOString();
-}
-
-updateLocalTime();
-window.setInterval(updateLocalTime, 1000);
-
-const welcomeOverlay = document.getElementById("welcomeOverlay");
-
-if (welcomeOverlay) {
-  const referrer = document.referrer ? new URL(document.referrer) : null;
-  const cameFromThisSite = referrer && referrer.origin === window.location.origin;
-
-  if (cameFromThisSite) {
-    welcomeOverlay.classList.add("is-hidden");
-    document.body.classList.remove("has-welcome");
-  } else {
-    window.setTimeout(() => {
-      welcomeOverlay.classList.add("is-hidden");
-      document.body.classList.remove("has-welcome");
-    }, 2500);
-  }
-}
-
-document.querySelectorAll(".menu-toggle").forEach((toggle) => {
-  const submenu = toggle.nextElementSibling;
-
-  toggle.addEventListener("click", () => {
-    const isOpen = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-
-    if (submenu) {
-      submenu.hidden = isOpen;
-    }
-  });
-});
-
-const lightbox = document.getElementById("lightbox");
-
-const slides = [
-  {
-    web: "/assets/photos/banihtse-29-web.jpg",
-    full: "/assets/photos/banihtse-29.jpg",
-    caption: "Sofia, Bulgaria, 2019",
-    label: "01 / Sofia, Bulgaria",
-    alt: "Analogue black and white photograph of a reflected street scene in Sofia",
-  },
-  {
-    web: "/assets/photos/untitled-11-web.jpg",
-    full: "/assets/photos/untitled-11.jpg",
-    caption: "Corfu, Greece, 2018",
-    label: "02 / Corfu, Greece, 2018",
-    alt: "Analogue black and white photograph of pigeons flying through a narrow street",
-  },
-];
-
-const emptyImage =
-  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-
-let currentSlideIndex = 0;
-
-slides.forEach((slide) => {
-  const preload = new Image();
-  preload.src = slide.web;
-});
-
-if (lightbox) {
-  const lightboxImage = lightbox.querySelector("img");
-  const lightboxCaption = lightbox.querySelector("figcaption");
-  const closeButton = lightbox.querySelector(".lightbox-close");
-  const previousButton = lightbox.querySelector(".lightbox-prev");
-  const nextButton = lightbox.querySelector(".lightbox-next");
-  let lightboxSlideIndex = currentSlideIndex;
-
-  function showLightboxSlide(index) {
-    const slide = slides[index];
-
-    if (!slide) {
-      return;
-    }
-
-    lightboxSlideIndex = index;
-    lightboxImage.alt = slide.alt;
-    lightboxCaption.textContent = slide.caption;
-    lightboxImage.onerror = () => {
-      const fallbackImage = document.querySelector(`.photo-open[data-slide="${index}"] img`);
-      const fallbackSource = fallbackImage?.currentSrc || fallbackImage?.src;
-
-      lightboxImage.onerror = null;
-
-      if (fallbackSource) {
-        lightboxImage.src = fallbackSource;
-      }
-    };
-    lightboxImage.src = slide.full;
-  }
-
-  function goToLightboxSlide(direction) {
-    const nextIndex = (lightboxSlideIndex + direction + slides.length) % slides.length;
-    showLightboxSlide(nextIndex);
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove("is-open");
-    lightbox.setAttribute("aria-hidden", "true");
-    lightboxImage.onerror = null;
-    lightboxImage.src = emptyImage;
-    document.body.style.overflow = "";
-  }
-
-  document.querySelectorAll(".photo-open, .meta-open").forEach((button) => {
-    button.addEventListener("click", () => {
-      const slideIndex = Number(button.dataset.slide ?? currentSlideIndex);
-      currentSlideIndex = Number.isNaN(slideIndex) ? currentSlideIndex : slideIndex;
-
-      showLightboxSlide(currentSlideIndex);
-      lightbox.classList.add("is-open");
-      lightbox.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-      closeButton.focus();
-    });
-  });
-
-  closeButton.addEventListener("click", closeLightbox);
-  previousButton.addEventListener("click", () => goToLightboxSlide(-1));
-  nextButton.addEventListener("click", () => goToLightboxSlide(1));
-
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && lightbox.classList.contains("is-open")) {
-      closeLightbox();
-    }
-
-    if (event.key === "ArrowLeft" && lightbox.classList.contains("is-open")) {
-      goToLightboxSlide(-1);
-    }
-
-    if (event.key === "ArrowRight" && lightbox.classList.contains("is-open")) {
-      goToLightboxSlide(1);
-    }
-  });
-}
-
-document.querySelectorAll(".book-viewer").forEach((viewer) => {
-  const pdfUrl = viewer.dataset.pdf;
-  const status = viewer.querySelector("[data-book-status]");
-  const counter = viewer.querySelector("[data-book-counter]");
-  const leftCanvas = viewer.querySelector("[data-book-canvas-left]");
-  const rightCanvas = viewer.querySelector("[data-book-canvas-right]");
-  const previousButton = viewer.querySelector("[data-book-prev]");
-  const nextButton = viewer.querySelector("[data-book-next]");
-  const bookLightbox = document.getElementById("bookLightbox");
-  const bookLightboxCanvas = bookLightbox?.querySelector("[data-book-lightbox-canvas]");
-  const bookLightboxCaption = bookLightbox?.querySelector("[data-book-lightbox-caption]");
-  const bookLightboxClose = bookLightbox?.querySelector("[data-book-lightbox-close]");
-  const bookLightboxPrev = bookLightbox?.querySelector("[data-book-lightbox-prev]");
-  const bookLightboxNext = bookLightbox?.querySelector("[data-book-lightbox-next]");
-
-  if (!pdfUrl || !window.pdfjsLib || !leftCanvas || !rightCanvas) {
-    if (status) {
-      status.textContent = "open pdf";
-    }
-
-    return;
-  }
-
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-  let pdfDocument = null;
-  let spreadStart = 1;
-  let isRendering = false;
-  let expandedPage = 1;
-
-  function setStatus(text) {
-    if (status) {
-      status.textContent = text;
-    }
-  }
-
-  function updateCounter() {
-    if (!counter || !pdfDocument) {
-      return;
-    }
-
-    const spreadEnd = Math.min(spreadStart + 1, pdfDocument.numPages);
-    counter.textContent = `${spreadStart}-${spreadEnd} / ${pdfDocument.numPages}`;
-  }
-
-  function clearCanvas(canvas) {
-    if (!canvas) {
-      return;
-    }
-
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-  async function renderPage(pageNumber, canvas) {
-    if (!pdfDocument || pageNumber > pdfDocument.numPages) {
-      clearCanvas(canvas);
-      canvas.removeAttribute("aria-label");
-      canvas.removeAttribute("data-page");
-      canvas.removeAttribute("tabindex");
-      canvas.removeAttribute("role");
-      return;
-    }
-
-    const page = await pdfDocument.getPage(pageNumber);
-    const containerWidth = Math.max(canvas.parentElement.clientWidth, 280);
-    const baseViewport = page.getViewport({ scale: 1 });
-    const scale = containerWidth / baseViewport.width;
-    const viewport = page.getViewport({ scale });
-    const outputScale = Math.min(window.devicePixelRatio || 1, 2.5);
-    const context = canvas.getContext("2d");
-
-    canvas.width = Math.floor(viewport.width * outputScale);
-    canvas.height = Math.floor(viewport.height * outputScale);
-    canvas.style.width = `${Math.floor(viewport.width)}px`;
-    canvas.style.height = `${Math.floor(viewport.height)}px`;
-    canvas.setAttribute("aria-label", `page ${pageNumber}`);
-    canvas.dataset.page = String(pageNumber);
-    canvas.setAttribute("tabindex", "0");
-    canvas.setAttribute("role", "button");
-
-    await page.render({
-      canvasContext: context,
-      viewport,
-      transform:
-        outputScale !== 1
-          ? [outputScale, 0, 0, outputScale, 0, 0]
-          : null,
-    }).promise;
-  }
-
-  async function renderExpandedPage(pageNumber) {
-    if (!pdfDocument || !bookLightboxCanvas || pageNumber < 1 || pageNumber > pdfDocument.numPages) {
-      return;
-    }
-
-    expandedPage = pageNumber;
-    const page = await pdfDocument.getPage(pageNumber);
-    const baseViewport = page.getViewport({ scale: 1 });
-    const maxWidth = Math.min(window.innerWidth * 0.9, 1180);
-    const maxHeight = window.innerHeight * 0.78;
-    const scale = Math.min(maxWidth / baseViewport.width, maxHeight / baseViewport.height);
-    const viewport = page.getViewport({ scale });
-    const outputScale = Math.min(window.devicePixelRatio || 1, 2.5);
-    const context = bookLightboxCanvas.getContext("2d");
-
-    bookLightboxCanvas.width = Math.floor(viewport.width * outputScale);
-    bookLightboxCanvas.height = Math.floor(viewport.height * outputScale);
-    bookLightboxCanvas.style.width = `${Math.floor(viewport.width)}px`;
-    bookLightboxCanvas.style.height = `${Math.floor(viewport.height)}px`;
-    context.clearRect(0, 0, bookLightboxCanvas.width, bookLightboxCanvas.height);
-
-    if (bookLightboxCaption) {
-      bookLightboxCaption.textContent = `page ${pageNumber} / ${pdfDocument.numPages}`;
-    }
-
-    await page.render({
-      canvasContext: context,
-      viewport,
-      transform:
-        outputScale !== 1
-          ? [outputScale, 0, 0, outputScale, 0, 0]
-          : null,
-    }).promise;
-  }
-
-  function openExpandedPage(pageNumber) {
-    if (!bookLightbox || !pdfDocument) {
-      return;
-    }
-
-    bookLightbox.classList.add("is-open");
-    bookLightbox.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    renderExpandedPage(pageNumber);
-    bookLightboxClose?.focus();
-  }
-
-  function closeExpandedPage() {
-    if (!bookLightbox) {
-      return;
-    }
-
-    bookLightbox.classList.remove("is-open");
-    bookLightbox.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-    clearCanvas(bookLightboxCanvas);
-  }
-
-  function moveExpandedPage(direction) {
-    if (!pdfDocument) {
-      return;
-    }
-
-    const nextPage = Math.min(Math.max(expandedPage + direction, 1), pdfDocument.numPages);
-    renderExpandedPage(nextPage);
-  }
-
-  async function renderSpread() {
-    if (!pdfDocument || isRendering) {
-      return;
-    }
-
-    isRendering = true;
-    setStatus("loading spread");
-    updateCounter();
-
-    try {
-      await Promise.all([
-        renderPage(spreadStart, leftCanvas),
-        renderPage(spreadStart + 1, rightCanvas),
-      ]);
-      setStatus("double page view");
-    } catch (error) {
-      setStatus("pdf preview unavailable");
-    } finally {
-      isRendering = false;
-    }
-  }
-
-  previousButton?.addEventListener("click", () => {
-    if (spreadStart <= 1 || isRendering) {
-      return;
-    }
-
-    spreadStart = Math.max(1, spreadStart - 2);
-    renderSpread();
-  });
-
-  nextButton?.addEventListener("click", () => {
-    if (!pdfDocument || spreadStart + 2 > pdfDocument.numPages || isRendering) {
-      return;
-    }
-
-    spreadStart += 2;
-    renderSpread();
-  });
-
-  [leftCanvas, rightCanvas].forEach((canvas) => {
-    canvas.addEventListener("click", () => {
-      const pageNumber = Number(canvas.dataset.page);
-
-      if (!Number.isNaN(pageNumber)) {
-        openExpandedPage(pageNumber);
-      }
-    });
-
-    canvas.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") {
-        return;
-      }
-
-      event.preventDefault();
-      const pageNumber = Number(canvas.dataset.page);
-
-      if (!Number.isNaN(pageNumber)) {
-        openExpandedPage(pageNumber);
-      }
-    });
-  });
-
-  bookLightboxClose?.addEventListener("click", closeExpandedPage);
-  bookLightboxPrev?.addEventListener("click", () => moveExpandedPage(-1));
-  bookLightboxNext?.addEventListener("click", () => moveExpandedPage(1));
-  bookLightbox?.addEventListener("click", (event) => {
-    if (event.target === bookLightbox) {
-      closeExpandedPage();
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (pdfDocument) {
-      renderSpread();
-
-      if (bookLightbox?.classList.contains("is-open")) {
-        renderExpandedPage(expandedPage);
-      }
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (!bookLightbox?.classList.contains("is-open")) {
-      return;
-    }
-
-    if (event.key === "Escape") {
-      closeExpandedPage();
-    }
-
-    if (event.key === "ArrowLeft") {
-      moveExpandedPage(-1);
-    }
-
-    if (event.key === "ArrowRight") {
-      moveExpandedPage(1);
-    }
-  });
-
-  window.pdfjsLib
-    .getDocument(pdfUrl)
-    .promise.then((loadedPdf) => {
-      pdfDocument = loadedPdf;
-      renderSpread();
-    })
-    .catch(() => {
-      setStatus("pdf preview unavailable");
-    });
-});
+şŠmş&yºŞÃòân¶«Ëñè™æë{Ü™ßì…éez{ì†X§{_?n)ÿ¦Ã©z¶­Š‰ç¢Ú^®h­µçYØİ[Y[™Ù][[Y[RY
+YX\ˆŠK^ÛÛ[H™]È]J
+K™Ù][YX\Š
+NÂ‚˜ÛÛœİØØ[[YHHØİ[Y[™Ù][[Y[RY
+›ØØ[[YHŠNÂ‚™[˜İ[Ûˆ\]SØØ[[YJ
+HÂˆYˆ
+[ØØ[[YJHÂˆ™]\›ÂˆB‚ˆÛÛœİ›İÈH™]È]J
+NÂˆØØ[[YK^ÛÛ[H™]È[‘]U[YQ›Ü›X]
+™[‹QĞˆ‹Âˆİ\ˆŒ‹YYÚ]‹ˆZ[]NˆŒ‹YYÚ]‹ˆÙXÛÛ™ˆŒ‹YYÚ]‹ˆİ\ŒLˆ˜[ÙKˆ[YV›Û™Nˆ‘]\›ÜKĞ][œÈ‹ˆJK™›Ü›X]
+›İÊNÂˆØØ[[YK™]U[YHH›İËÒTÓÔİš[™Ê
+NÂŸB‚\]SØØ[[YJ
+NÂÚ[™İËœÙ][\˜[
+\]SØØ[[YKL
+NÂ‚˜ÛÛœİÙ[ÛÛYSİ™\›^HHØİ[Y[™Ù][[Y[RY
+Ù[ÛÛYSİ™\›^HŠNÂ‚šYˆ
+Ù[ÛÛYSİ™\›^JHÂˆÛÛœİ™Y™\œ™\ˆHØİ[Y[œ™Y™\œ™\ˆÈ™]ÈT“
+Øİ[Y[œ™Y™\œ™\ŠHˆ[ÂˆÛÛœİØ[YQœ›ÛU\ÔÚ]HH™Y™\œ™\ˆ	‰ˆ™Y™\œ™\‹›ÜšYÚ[ˆOOHÚ[™İË›ØØ][Û‹›ÜšYÚ[Â‚ˆYˆ
+Ø[YQœ›ÛU\ÔÚ]JHÂˆÙ[ÛÛYSİ™\›^K˜Û\ÜÓ\İ˜Y
+š\ËZY[ˆŠNÂˆØİ[Y[˜›ÙK˜Û\ÜÓ\İœ™[[İ™Jš\Ë]Ù[ÛÛYHŠNÂˆH[ÙHÂˆÚ[™İËœÙ][Y[İ]
+
+
+HOˆÂˆÙ[ÛÛYSİ™\›^K˜Û\ÜÓ\İ˜Y
+š\ËZY[ˆŠNÂˆØİ[Y[˜›ÙK˜Û\ÜÓ\İœ™[[İ™Jš\Ë]Ù[ÛÛYHŠNÂˆKL
+NÂˆBŸB‚™Øİ[Y[œ]Y\TÙ[XİÜ[
+‹›Y[K]ÙÙÛHŠK™›Ü‘XXÚ
+
+ÙÙÛJHOˆÂˆÛÛœİİX›Y[HHÙÙÛK›™^[[Y[ÚX›[™ÎÂ‚ˆÙÙÛK˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÂˆÛÛœİ\ÓÜ[ˆHÙÙÛK™Ù]]šX]J˜\šXKY^[™YŠHOOHYHÂˆÙÙÛKœÙ]]šX]J˜\šXKY^[™Y‹İš[™ÊZ\ÓÜ[ŠJNÂ‚ˆYˆ
+İX›Y[JHÂˆİX›Y[KšY[ˆH\ÓÜ[ÂˆBˆJNÂŸJNÂ‚˜ÛÛœİYÚ›ŞHØİ[Y[™Ù][[Y[RY
+›YÚ›ŞŠNÂ‚˜ÛÛœİÛY\ÈHÂˆÂˆÙXˆ‹Ø\ÜÙ]ËÜİÜËØ˜[šZÙKLK]ÙX‹šœÈ‹ˆ[ˆ‹Ø\ÜÙ]ËÜİÜËØ˜[šZÙKLKšœÈ‹ˆØ\[Ûˆ”ÛÙšXK[Ø\šXKŒNH‹ˆX™[ˆŒHÈÛÙšXK[Ø\šXH‹ˆ[ˆ[˜[ÙİYH›XÚÈ[™Ú]HİÙÜ˜\ÙˆH™Y›XİYİ™Y]ØÙ[™H[ˆÛÙšXH‹ˆKˆÂˆÙXˆ‹Ø\ÜÙ]ËÜİÜËİ[]YLLK]ÙX‹šœÈ‹ˆ[ˆ‹Ø\ÜÙ]ËÜİÜËİ[]YLLKšœÈ‹ˆØ\[ÛˆÛÜ™KÜ™YXÙKŒN‹ˆX™[ˆŒˆÈÛÜ™KÜ™YXÙKŒN‹ˆ[ˆ[˜[ÙİYH›XÚÈ[™Ú]HİÙÜ˜\ÙˆYÙ[ÛœÈ›Z[™È›İYÚH˜\œ›İÈİ™Y]‹ˆKˆÂˆÙXˆ‹‹Ø\ÜÙ]ËÜİÜËØ˜[šZÙL‹]ÙX‹šœÈ‹ˆ[ˆ‹‹Ø\ÜÙ]ËÜİÜËØ˜[šZÙL‹šœÈ‹ˆØ\[Ûˆ”ÛÙšXK[Ø\šXKŒNH‹ˆX™[ˆŒÈÈÛÙšXK[Ø\šXKŒNH‹ˆ[ˆ›XÚÈ[™Ú]Hİ™Y]İÙÜ˜\ÚİÚ[™ÈY\İšX[œÈ[™™Y›Xİ[ÛœÈÛˆH˜Z[Hİ™Y][ˆÛÙšXH‹ˆK—NÂ‚˜ÛÛœİ[\R[XYÙHBˆ™]Nš[XYÙKÙÚYØ˜\ÙMŒÓÑTPPRPPPPPPPTËËŞ]ĞPPPPPTPPPPPĞU]ĞSİÏOHÂ‚›]İ\œ™[ÛYR[™^HÂ‚œÛY\Ë™›Ü‘XXÚ
+
+ÛYJHOˆÂˆÛÛœİ™[ØYH™]È[XYÙJ
+NÂˆ™[ØYœÜ˜ÈHÛYKÙXÂŸJNÂ‚šYˆ
+YÚ›Ş
+HÂˆÛÛœİYÚ›Ş[XYÙHHYÚ›Şœ]Y\TÙ[XİÜŠš[YÈŠNÂˆÛÛœİYÚ›ŞØ\[ÛˆHYÚ›Şœ]Y\TÙ[XİÜŠ™šYØØ\[ÛˆŠNÂˆÛÛœİÛÜÙP]ÛˆHYÚ›Şœ]Y\TÙ[XİÜŠ‹›YÚ›ŞXÛÜÙHŠNÂˆÛÛœİ™]š[İ\Ğ]ÛˆHYÚ›Şœ]Y\TÙ[XİÜŠ‹›YÚ›Ş\™]ˆŠNÂˆÛÛœİ™^]ÛˆHYÚ›Şœ]Y\TÙ[XİÜŠ‹›YÚ›Ş[™^ŠNÂˆ]YÚ›ŞÛYR[™^Hİ\œ™[ÛYR[™^Â‚ˆ[˜İ[ÛˆÚİÓYÚ›ŞÛYJ[™^
+HÂˆÛÛœİÛYHHÛY\ÖÚ[™^NÂ‚ˆYˆ
+\ÛYJHÂˆ™]\›ÂˆB‚ˆYÚ›ŞÛYR[™^H[™^ÂˆYÚ›Ş[XYÙK˜[HÛYK˜[ÂˆYÚ›ŞØ\[Û‹^ÛÛ[HÛYK˜Ø\[ÛÂˆYÚ›Ş[XYÙK›Û™\œ›ÜˆH
+
+HOˆÂˆÛÛœİ˜[˜XÚÒ[XYÙHHØİ[Y[œ]Y\TÙ[XİÜŠœİË[Ü[–Ù]K\ÛYOH‰Ú[™^H—H[YØ
+NÂˆÛÛœİ˜[˜XÚÔÛİ\˜ÙHH˜[˜XÚÒ[XYÙOË˜İ\œ™[Ü˜È˜[˜XÚÒ[XYÙOËœÜ˜ÎÂ‚ˆYÚ›Ş[XYÙK›Û™\œ›ÜˆH[Â‚ˆYˆ
+˜[˜XÚÔÛİ\˜ÙJHÂˆYÚ›Ş[XYÙKœÜ˜ÈH˜[˜XÚÔÛİ\˜ÙNÂˆBˆNÂˆYÚ›Ş[XYÙKœÜ˜ÈHÛYK™[ÂˆB‚ˆ[˜İ[ÛˆÛÕÓYÚ›ŞÛYJ\™Xİ[ÛŠHÂˆÛÛœİ™^[™^H
+YÚ›ŞÛYR[™^
+È\™Xİ[Ûˆ
+ÈÛY\Ë›[™İ
+H	HÛY\Ë›[™İÂˆÚİÓYÚ›ŞÛYJ™^[™^
+NÂˆB‚ˆ[˜İ[ÛˆÛÜÙSYÚ›Ş
+
+HÂˆYÚ›Ş˜Û\ÜÓ\İœ™[[İ™Jš\Ë[Ü[ˆŠNÂˆYÚ›ŞœÙ]]šX]J˜\šXKZY[ˆ‹YHŠNÂˆYÚ›Ş[XYÙK›Û™\œ›ÜˆH[ÂˆYÚ›Ş[XYÙKœÜ˜ÈH[\R[XYÙNÂˆØİ[Y[˜›ÙKœİ[K›İ™\™›İÈHˆÂˆB‚ˆØİ[Y[œ]Y\TÙ[XİÜ[
+‹œİË[Ü[‹›Y]K[Ü[ˆŠK™›Ü‘XXÚ
+
+]ÛŠHOˆÂˆ]Û‹˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÂˆÛÛœİÛYR[™^H[X™\Š]Û‹™]\Ù]œÛYHÏÈİ\œ™[ÛYR[™^
+NÂˆİ\œ™[ÛYR[™^H[X™\‹š\Ó˜SŠÛYR[™^
+HÈİ\œ™[ÛYR[™^ˆÛYR[™^Â‚ˆÚİÓYÚ›ŞÛYJİ\œ™[ÛYR[™^
+NÂˆYÚ›Ş˜Û\ÜÓ\İ˜Y
+š\Ë[Ü[ˆŠNÂˆYÚ›ŞœÙ]]šX]J˜\šXKZY[ˆ‹™˜[ÙHŠNÂˆØİ[Y[˜›ÙKœİ[K›İ™\™›İÈHšY[ˆÂˆÛÜÙP]Û‹™›Øİ\Ê
+NÂˆJNÂˆJNÂ‚ˆÛÜÙP]Û‹˜Y]™[\İ[™\Š˜ÛXÚÈ‹ÛÜÙSYÚ›Ş
+NÂˆ™]š[İ\Ğ]Û‹˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÛÕÓYÚ›ŞÛYJLJJNÂˆ™^]Û‹˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÛÕÓYÚ›ŞÛYJJJNÂ‚ˆYÚ›Ş˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+]™[
+HOˆÂˆYˆ
+]™[\™Ù]OOHYÚ›Ş
+HÂˆÛÜÙSYÚ›Ş
+
+NÂˆBˆJNÂ‚ˆØİ[Y[˜Y]™[\İ[™\ŠšÙ^YİÛˆ‹
+]™[
+HOˆÂˆYˆ
+]™[šÙ^HOOH‘\ØØ\Hˆ	‰ˆYÚ›Ş˜Û\ÜÓ\İ˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÜÙSYÚ›Ş
+
+NÂˆB‚ˆYˆ
+]™[šÙ^HOOH\œ›İÓYˆ	‰ˆYÚ›Ş˜Û\ÜÓ\İ˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÕÓYÚ›ŞÛYJLJNÂˆB‚ˆYˆ
+]™[šÙ^HOOH\œ›İÔšYÚˆ	‰ˆYÚ›Ş˜Û\ÜÓ\İ˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÕÓYÚ›ŞÛYJJNÂˆBˆJNÂŸB‚™Øİ[Y[œ]Y\TÙ[XİÜ[
+‹˜›ÛÚË]šY]Ù\ˆŠK™›Ü‘XXÚ
+
+šY]Ù\ŠHOˆÂˆÛÛœİYÙ\Ô]HšY]Ù\‹™]\Ù]œYÙ\ÎÂˆÛÛœİİ[YÙ\ÈH[X™\ŠšY]Ù\‹™]\Ù]œYÙPÛİ[
+NÂˆÛÛœİİ]\ÈHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË\İ]\×HŠNÂˆÛÛœİÛİ[\ˆHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚËXÛİ[\—HŠNÂˆÛÛœİYYÙHHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË\YÙK[YHŠNÂˆÛÛœİšYÚYÙHHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË\YÙK\šYÚHŠNÂˆÛÛœİ™]š[İ\Ğ]ÛˆHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË\™]—HŠNÂˆÛÛœİ™^]ÛˆHšY]Ù\‹œ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[™^HŠNÂˆÛÛœİ›ÛÚÓYÚ›ŞHØİ[Y[™Ù][[Y[RY
+˜›ÛÚÓYÚ›ŞŠNÂˆÛÛœİ›ÛÚÓYÚ›Ş[XYÙHH›ÛÚÓYÚ›ŞËœ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[YÚ›ŞZ[XYÙWHŠNÂˆÛÛœİ›ÛÚÓYÚ›ŞØ\[ÛˆH›ÛÚÓYÚ›ŞËœ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[YÚ›ŞXØ\[Û—HŠNÂˆÛÛœİ›ÛÚÓYÚ›ŞÛÜÙHH›ÛÚÓYÚ›ŞËœ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[YÚ›ŞXÛÜÙWHŠNÂˆÛÛœİ›ÛÚÓYÚ›Ş™]ˆH›ÛÚÓYÚ›ŞËœ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[YÚ›Ş\™]—HŠNÂˆÛÛœİ›ÛÚÓYÚ›Ş™^H›ÛÚÓYÚ›ŞËœ]Y\TÙ[XİÜŠ–Ù]KX›ÛÚË[YÚ›Ş[™^HŠNÂ‚ˆYˆ
+\YÙ\Ô]]İ[YÙ\È[YYÙH\šYÚYÙJHÂˆYˆ
+İ]\ÊHÂˆİ]\Ë^ÛÛ[H˜›ÛÚÈ™]šY]È[˜]˜Z[X›HÂˆB‚ˆ™]\›ÂˆB‚ˆ]Ü™XYİ\HNÂˆ]\Ô™[™\š[™ÈH˜[ÙNÂˆ]^[™YYÙHHNÂ‚ˆ[˜İ[ÛˆYÙTÛİ\˜ÙJYÙS[X™\ŠHÂˆ™]\›ˆ	ÜYÙ\Ô]KÜYÙKIÔİš[™ÊYÙS[X™\ŠKœYİ\
+‹ŒŠ_KšœØÂˆB‚ˆ[˜İ[ÛˆÙ]İ]\Ê^
+HÂˆYˆ
+İ]\ÊHÂˆİ]\Ë^ÛÛ[H^ÂˆBˆB‚ˆ[˜İ[Ûˆ\]PÛİ[\Š
+HÂˆYˆ
+XÛİ[\ŠHÂˆ™]\›ÂˆB‚ˆÛÛœİÜ™XY[™HX]›Z[ŠÜ™XYİ\
+ÈKİ[YÙ\ÊNÂˆÛİ[\‹^ÛÛ[H	ÜÜ™XYİ\KIÜÜ™XY[™HÈ	İİ[YÙ\ßXÂˆB‚ˆ[˜İ[ÛˆÛX\”YÙJ[XYÙJHÂˆYˆ
+Z[XYÙJHÂˆ™]\›ÂˆB‚ˆ[XYÙKœ™[[İ™P]šX]JœÜ˜ÈŠNÂˆ[XYÙKœ™[[İ™P]šX]J˜\šXK[X™[ŠNÂˆ[XYÙKœ™[[İ™P]šX]J™]K\YÙHŠNÂˆ[XYÙKœ™[[İ™P]šX]JXš[™^ŠNÂˆ[XYÙKœ™[[İ™P]šX]Jœ›ÛHŠNÂˆ[XYÙKšY[ˆHYNÂˆB‚ˆ[˜İ[Ûˆ™[™\”YÙJYÙS[X™\‹[XYÙJHÂˆYˆ
+YÙS[X™\ˆˆİ[YÙ\ÊHÂˆÛX\”YÙJ[XYÙJNÂˆ™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™J
+NÂˆB‚ˆ[XYÙKšY[ˆH˜[ÙNÂˆ[XYÙK˜[Hİ™Y]›İš[™ÈİØ›ÛÚËYÙH	ÜYÙS[X™\ŸXÂˆ[XYÙKœÙ]]šX]J˜\šXK[X™[‹YÙH	ÜYÙS[X™\ŸX
+NÂˆ[XYÙK™]\Ù]œYÙHHİš[™ÊYÙS[X™\ŠNÂˆ[XYÙKœÙ]]šX]JXš[™^‹ŒŠNÂˆ[XYÙKœÙ]]šX]Jœ›ÛH‹˜]ÛˆŠNÂ‚ˆ™]\›ˆ™]È›ÛZ\ÙJ
+™\ÛÛ™K™Z™Xİ
+HOˆÂˆ[XYÙK›Û›ØYH
+
+HOˆ™\ÛÛ™J
+NÂˆ[XYÙK›Û™\œ›ÜˆH
+
+HOˆ™Z™Xİ
+™]È\œ›ÜŠ[˜X›HÈØYYÙH	ÜYÙS[X™\ŸX
+JNÂˆ[XYÙKœÜ˜ÈHYÙTÛİ\˜ÙJYÙS[X™\ŠNÂ‚ˆYˆ
+[XYÙK˜ÛÛ\]H	‰ˆ[XYÙK›˜]\˜[ÚYˆ
+HÂˆ™\ÛÛ™J
+NÂˆBˆJNÂˆB‚ˆ[˜İ[Ûˆ™[™\‘^[™YYÙJYÙS[X™\ŠHÂˆYˆ
+X›ÛÚÓYÚ›Ş[XYÙHYÙS[X™\ˆHYÙS[X™\ˆˆİ[YÙ\ÊHÂˆ™]\›ÂˆB‚ˆ^[™YYÙHHYÙS[X™\Âˆ›ÛÚÓYÚ›Ş[XYÙK˜[Hİ™Y]›İš[™ÈİØ›ÛÚËYÙH	ÜYÙS[X™\ŸXÂˆ›ÛÚÓYÚ›Ş[XYÙKœÜ˜ÈHYÙTÛİ\˜ÙJYÙS[X™\ŠNÂ‚ˆYˆ
+›ÛÚÓYÚ›ŞØ\[ÛŠHÂˆ›ÛÚÓYÚ›ŞØ\[Û‹^ÛÛ[HYÙH	ÜYÙS[X™\ŸHÈ	İİ[YÙ\ßXÂˆBˆB‚ˆ[˜İ[ÛˆÜ[‘^[™YYÙJYÙS[X™\ŠHÂˆYˆ
+X›ÛÚÓYÚ›Ş
+HÂˆ™]\›ÂˆB‚ˆ›ÛÚÓYÚ›Ş˜Û\ÜÓ\İ˜Y
+š\Ë[Ü[ˆŠNÂˆ›ÛÚÓYÚ›ŞœÙ]]šX]J˜\šXKZY[ˆ‹™˜[ÙHŠNÂˆØİ[Y[˜›ÙKœİ[K›İ™\™›İÈHšY[ˆÂˆ™[™\‘^[™YYÙJYÙS[X™\ŠNÂˆ›ÛÚÓYÚ›ŞÛÜÙOË™›Øİ\Ê
+NÂˆB‚ˆ[˜İ[ÛˆÛÜÙQ^[™YYÙJ
+HÂˆYˆ
+X›ÛÚÓYÚ›Ş
+HÂˆ™]\›ÂˆB‚ˆ›ÛÚÓYÚ›Ş˜Û\ÜÓ\İœ™[[İ™Jš\Ë[Ü[ˆŠNÂˆ›ÛÚÓYÚ›ŞœÙ]]šX]J˜\šXKZY[ˆ‹YHŠNÂˆØİ[Y[˜›ÙKœİ[K›İ™\™›İÈHˆÂˆ›ÛÚÓYÚ›Ş[XYÙOËœ™[[İ™P]šX]JœÜ˜ÈŠNÂˆB‚ˆ[˜İ[Ûˆ[İ™Q^[™YYÙJ\™Xİ[ÛŠHÂˆÛÛœİ™^YÙHHX]›Z[ŠX]›X^
+^[™YYÙH
+È\™Xİ[Û‹JKİ[YÙ\ÊNÂˆ™[™\‘^[™YYÙJ™^YÙJNÂˆB‚ˆ\Ş[˜È[˜İ[Ûˆ™[™\”Ü™XY
+
+HÂˆYˆ
+\Ô™[™\š[™ÊHÂˆ™]\›ÂˆB‚ˆ\Ô™[™\š[™ÈHYNÂˆÙ]İ]\Ê›ØY[™ÈÜ™XYŠNÂˆ\]PÛİ[\Š
+NÂ‚ˆHÂˆ]ØZ]›ÛZ\ÙK˜[
+Âˆ™[™\”YÙJÜ™XYİ\YYÙJKˆ™[™\”YÙJÜ™XYİ\
+ÈKšYÚYÙJKˆJNÂˆÙ]İ]\Ê™İX›HYÙHšY]ÈŠNÂˆHØ]Ú
+\œ›ÜŠHÂˆÙ]İ]\Ê˜›ÛÚÈ™]šY]È[˜]˜Z[X›HŠNÂˆHš[˜[HÂˆ\Ô™[™\š[™ÈH˜[ÙNÂˆBˆB‚ˆ™]š[İ\Ğ]ÛË˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÂˆYˆ
+Ü™XYİ\HH\Ô™[™\š[™ÊHÂˆ™]\›ÂˆB‚ˆÜ™XYİ\HX]›X^
+KÜ™XYİ\HŠNÂˆ™[™\”Ü™XY
+
+NÂˆJNÂ‚ˆ™^]ÛË˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÂˆYˆ
+Ü™XYİ\
+Èˆˆİ[YÙ\È\Ô™[™\š[™ÊHÂˆ™]\›ÂˆB‚ˆÜ™XYİ\
+ÏHÂˆ™[™\”Ü™XY
+
+NÂˆJNÂ‚ˆÛYYÙKšYÚYÙWK™›Ü‘XXÚ
+
+[XYÙJHOˆÂˆ[XYÙK˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆÂˆÛÛœİYÙS[X™\ˆH[X™\Š[XYÙK™]\Ù]œYÙJNÂ‚ˆYˆ
+S[X™\‹š\Ó˜SŠYÙS[X™\ŠJHÂˆÜ[‘^[™YYÙJYÙS[X™\ŠNÂˆBˆJNÂ‚ˆ[XYÙK˜Y]™[\İ[™\ŠšÙ^YİÛˆ‹
+]™[
+HOˆÂˆYˆ
+]™[šÙ^HOOH‘[\ˆˆ	‰ˆ]™[šÙ^HOOHˆŠHÂˆ™]\›ÂˆB‚ˆ]™[œ™]™[Y˜][
+
+NÂˆÛÛœİYÙS[X™\ˆH[X™\Š[XYÙK™]\Ù]œYÙJNÂ‚ˆYˆ
+S[X™\‹š\Ó˜SŠYÙS[X™\ŠJHÂˆÜ[‘^[™YYÙJYÙS[X™\ŠNÂˆBˆJNÂˆJNÂ‚ˆ›ÛÚÓYÚ›ŞÛÜÙOË˜Y]™[\İ[™\Š˜ÛXÚÈ‹ÛÜÙQ^[™YYÙJNÂˆ›ÛÚÓYÚ›Ş™]Ë˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆ[İ™Q^[™YYÙJLJJNÂˆ›ÛÚÓYÚ›Ş™^Ë˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+
+HOˆ[İ™Q^[™YYÙJJJNÂˆ›ÛÚÓYÚ›ŞË˜Y]™[\İ[™\Š˜ÛXÚÈ‹
+]™[
+HOˆÂˆYˆ
+]™[\™Ù]OOH›ÛÚÓYÚ›Ş
+HÂˆÛÜÙQ^[™YYÙJ
+NÂˆBˆJNÂ‚ˆØİ[Y[˜Y]™[\İ[™\ŠšÙ^YİÛˆ‹
+]™[
+HOˆÂˆYˆ
+X›ÛÚÓYÚ›ŞË˜Û\ÜÓ\İ˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆ™]\›ÂˆB‚ˆYˆ
+]™[šÙ^HOOH‘\ØØ\HŠHÂˆÛÜÙQ^[™YYÙJ
+NÂˆB‚ˆYˆ
+]™[šÙ^HOOH\œ›İÓYŠHÂˆ[İ™Q^[™YYÙJLJNÂˆB‚ˆYˆ
+]™[šÙ^HOOH\œ›İÔšYÚŠHÂˆ[İ™Q^[™YYÙJJNÂˆBˆJNÂ‚ˆ™[™\”Ü™XY
+
+NÂŸJNÂ
