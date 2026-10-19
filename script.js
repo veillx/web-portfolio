@@ -1,166 +1,389 @@
-þŠmþ&yºÞÃòân¶«Ëñè™æë{Ü™ßì…éez{ì†X§{_?n)ÿ¦Ã©z¶­Š‰ç¢Ú^®h­µçYØÝ[Y[™Ù][[Y[žRY
-žYX\ˆŠK^ÛÛ[H™]È]J
-K™Ù][YX\Š
-NÂ‚˜ÛÛœÝØØ[[YHHØÝ[Y[™Ù][[Y[žRY
-›ØØ[[YHŠNÂ‚™[˜Ý[Ûˆ\]SØØ[[YJ
-HÂˆYˆ
-[ØØ[[YJHÂˆ™]\›ŽÂˆB‚ˆÛÛœÝ›ÝÈH™]È]J
-NÂˆØØ[[YK^ÛÛ[H™]È[‘]U[YQ›Ü›X]
-™[‹QÐˆ‹ÂˆÝ\ŽˆŒ‹YYÚ]‹ˆZ[]NˆŒ‹YYÚ]‹ˆÙXÛÛ™ˆŒ‹YYÚ]‹ˆÝ\ŒLŽˆ˜[ÙKˆ[YV›Û™Nˆ‘]\›ÜKÐ][œÈ‹ˆJK™›Ü›X]
-›ÝÊNÂˆØØ[[YK™]U[YHH›ÝËÒTÓÔÝš[™Ê
-NÂŸB‚\]SØØ[[YJ
-NÂÚ[™ÝËœÙ][\˜[
-\]SØØ[[YKL
-NÂ‚˜ÛÛœÝÙ[ÛÛYSÝ™\›^HHØÝ[Y[™Ù][[Y[žRY
-Ù[ÛÛYSÝ™\›^HŠNÂ‚šYˆ
-Ù[ÛÛYSÝ™\›^JHÂˆÛÛœÝ™Y™\œ™\ˆHØÝ[Y[œ™Y™\œ™\ˆÈ™]ÈT“
-ØÝ[Y[œ™Y™\œ™\ŠHˆ[ÂˆÛÛœÝØ[YQœ›ÛU\ÔÚ]HH™Y™\œ™\ˆ	‰ˆ™Y™\œ™\‹›ÜšYÚ[ˆOOHÚ[™ÝË›ØØ][Û‹›ÜšYÚ[ŽÂ‚ˆYˆ
-Ø[YQœ›ÛU\ÔÚ]JHÂˆÙ[ÛÛYSÝ™\›^K˜Û\ÜÓ\Ý˜Y
-š\ËZY[ˆŠNÂˆØÝ[Y[˜›ÙK˜Û\ÜÓ\Ýœ™[[Ý™Jš\Ë]Ù[ÛÛYHŠNÂˆH[ÙHÂˆÚ[™ÝËœÙ][Y[Ý]
+document.getElementById("year").textContent = new Date().getFullYear();
 
+const localTime = document.getElementById("localTime");
 
-HOˆÂˆÙ[ÛÛYSÝ™\›^K˜Û\ÜÓ\Ý˜Y
-š\ËZY[ˆŠNÂˆØÝ[Y[˜›ÙK˜Û\ÜÓ\Ýœ™[[Ý™Jš\Ë]Ù[ÛÛYHŠNÂˆKL
-NÂˆBŸB‚™ØÝ[Y[œ]Y\žTÙ[XÝÜ[
-‹›Y[K]ÙÙÛHŠK™›Ü‘XXÚ
+function updateLocalTime() {
+  if (!localTime) {
+    return;
+  }
 
-ÙÙÛJHOˆÂˆÛÛœÝÝX›Y[HHÙÙÛK›™^[[Y[ÚX›[™ÎÂ‚ˆÙÙÛK˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+  const now = new Date();
+  localTime.textContent = new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Europe/Athens",
+  }).format(now);
+  localTime.dateTime = now.toISOString();
+}
 
-HOˆÂˆÛÛœÝ\ÓÜ[ˆHÙÙÛK™Ù]]šX]J˜\šXKY^[™YŠHOOHYHŽÂˆÙÙÛKœÙ]]šX]J˜\šXKY^[™Y‹Ýš[™ÊZ\ÓÜ[ŠJNÂ‚ˆYˆ
-ÝX›Y[JHÂˆÝX›Y[KšY[ˆH\ÓÜ[ŽÂˆBˆJNÂŸJNÂ‚˜ÛÛœÝYÚ›ÞHØÝ[Y[™Ù][[Y[žRY
-›YÚ›ÞŠNÂ‚˜ÛÛœÝÛY\ÈHÂˆÂˆÙXŽˆ‹Ø\ÜÙ]ËÜÝÜËØ˜[šZÙKLŽK]ÙX‹šœÈ‹ˆ[ˆ‹Ø\ÜÙ]ËÜÝÜËØ˜[šZÙKLŽKšœÈ‹ˆØ\[ÛŽˆ”ÛÙšXK[Ø\šXKŒNH‹ˆX™[ˆŒHÈÛÙšXK[Ø\šXH‹ˆ[ˆ[˜[ÙÝYH›XÚÈ[™Ú]HÝÙÜ˜\ÙˆH™Y›XÝYÝ™Y]ØÙ[™H[ˆÛÙšXH‹ˆKˆÂˆÙXŽˆ‹Ø\ÜÙ]ËÜÝÜËÝ[]YLLK]ÙX‹šœÈ‹ˆ[ˆ‹Ø\ÜÙ]ËÜÝÜËÝ[]YLLKšœÈ‹ˆØ\[ÛŽˆÛÜ™KÜ™YXÙKŒN‹ˆX™[ˆŒˆÈÛÜ™KÜ™YXÙKŒN‹ˆ[ˆ[˜[ÙÝYH›XÚÈ[™Ú]HÝÙÜ˜\ÙˆYÙ[ÛœÈ›Z[™È›ÝYÚH˜\œ›ÝÈÝ™Y]‹ˆKˆÂˆÙXŽˆ‹‹Ø\ÜÙ]ËÜÝÜËØ˜[šZÙL‹]ÙX‹šœÈ‹ˆ[ˆ‹‹Ø\ÜÙ]ËÜÝÜËØ˜[šZÙL‹šœÈ‹ˆØ\[ÛŽˆ”ÛÙšXK[Ø\šXKŒNH‹ˆX™[ˆŒÈÈÛÙšXK[Ø\šXKŒNH‹ˆ[ˆ›XÚÈ[™Ú]HÝ™Y]ÝÙÜ˜\ÚÝÚ[™ÈY\ÝšX[œÈ[™™Y›XÝ[ÛœÈÛˆH˜Z[žHÝ™Y][ˆÛÙšXH‹ˆK—NÂ‚˜ÛÛœÝ[\R[XYÙHBˆ™]Nš[XYÙKÙÚYŽØ˜\ÙMŒÓÑTPPRPPPPPPPTËËÞ]ÐPPPPPTPPPPPÐU]ÐSÝÏOHŽÂ‚›]Ý\œ™[ÛYR[™^HÂ‚œÛY\Ë™›Ü‘XXÚ
+updateLocalTime();
+window.setInterval(updateLocalTime, 1000);
 
-ÛYJHOˆÂˆÛÛœÝ™[ØYH™]È[XYÙJ
-NÂˆ™[ØYœÜ˜ÈHÛYKÙXŽÂŸJNÂ‚šYˆ
-YÚ›Þ
-HÂˆÛÛœÝYÚ›Þ[XYÙHHYÚ›Þœ]Y\žTÙ[XÝÜŠš[YÈŠNÂˆÛÛœÝYÚ›ÞØ\[ÛˆHYÚ›Þœ]Y\žTÙ[XÝÜŠ™šYØØ\[ÛˆŠNÂˆÛÛœÝÛÜÙP]ÛˆHYÚ›Þœ]Y\žTÙ[XÝÜŠ‹›YÚ›ÞXÛÜÙHŠNÂˆÛÛœÝ™]š[Ý\Ð]ÛˆHYÚ›Þœ]Y\žTÙ[XÝÜŠ‹›YÚ›Þ\™]ˆŠNÂˆÛÛœÝ™^]ÛˆHYÚ›Þœ]Y\žTÙ[XÝÜŠ‹›YÚ›Þ[™^ŠNÂˆ]YÚ›ÞÛYR[™^HÝ\œ™[ÛYR[™^Â‚ˆ[˜Ý[ÛˆÚÝÓYÚ›ÞÛYJ[™^
-HÂˆÛÛœÝÛYHHÛY\ÖÚ[™^NÂ‚ˆYˆ
-\ÛYJHÂˆ™]\›ŽÂˆB‚ˆYÚ›ÞÛYR[™^H[™^ÂˆYÚ›Þ[XYÙK˜[HÛYK˜[ÂˆYÚ›ÞØ\[Û‹^ÛÛ[HÛYK˜Ø\[ÛŽÂˆYÚ›Þ[XYÙK›Û™\œ›ÜˆH
+const welcomeOverlay = document.getElementById("welcomeOverlay");
 
-HOˆÂˆÛÛœÝ˜[˜XÚÒ[XYÙHHØÝ[Y[œ]Y\žTÙ[XÝÜŠœÝË[Ü[–Ù]K\ÛYOH‰Ú[™^H—H[YØ
-NÂˆÛÛœÝ˜[˜XÚÔÛÝ\˜ÙHH˜[˜XÚÒ[XYÙOË˜Ý\œ™[Ü˜È˜[˜XÚÒ[XYÙOËœÜ˜ÎÂ‚ˆYÚ›Þ[XYÙK›Û™\œ›ÜˆH[Â‚ˆYˆ
-˜[˜XÚÔÛÝ\˜ÙJHÂˆYÚ›Þ[XYÙKœÜ˜ÈH˜[˜XÚÔÛÝ\˜ÙNÂˆBˆNÂˆYÚ›Þ[XYÙKœÜ˜ÈHÛYK™[ÂˆB‚ˆ[˜Ý[ÛˆÛÕÓYÚ›ÞÛYJ\™XÝ[ÛŠHÂˆÛÛœÝ™^[™^H
-YÚ›ÞÛYR[™^
-È\™XÝ[Ûˆ
-ÈÛY\Ë›[™Ý
-H	HÛY\Ë›[™ÝÂˆÚÝÓYÚ›ÞÛYJ™^[™^
-NÂˆB‚ˆ[˜Ý[ÛˆÛÜÙSYÚ›Þ
+if (welcomeOverlay) {
+  const referrer = document.referrer ? new URL(document.referrer) : null;
+  const cameFromThisSite = referrer && referrer.origin === window.location.origin;
 
-HÂˆYÚ›Þ˜Û\ÜÓ\Ýœ™[[Ý™Jš\Ë[Ü[ˆŠNÂˆYÚ›ÞœÙ]]šX]J˜\šXKZY[ˆ‹YHŠNÂˆYÚ›Þ[XYÙK›Û™\œ›ÜˆH[ÂˆYÚ›Þ[XYÙKœÜ˜ÈH[\R[XYÙNÂˆØÝ[Y[˜›ÙKœÝ[K›Ý™\™›ÝÈHˆŽÂˆB‚ˆØÝ[Y[œ]Y\žTÙ[XÝÜ[
-‹œÝË[Ü[‹›Y]K[Ü[ˆŠK™›Ü‘XXÚ
+  if (cameFromThisSite) {
+    welcomeOverlay.classList.add("is-hidden");
+    document.body.classList.remove("has-welcome");
+  } else {
+    window.setTimeout(() => {
+      welcomeOverlay.classList.add("is-hidden");
+      document.body.classList.remove("has-welcome");
+    }, 2500);
+  }
+}
 
-]ÛŠHOˆÂˆ]Û‹˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+document.querySelectorAll(".menu-toggle").forEach((toggle) => {
+  const submenu = toggle.nextElementSibling;
 
-HOˆÂˆÛÛœÝÛYR[™^H[X™\Š]Û‹™]\Ù]œÛYHÏÈÝ\œ™[ÛYR[™^
-NÂˆÝ\œ™[ÛYR[™^H[X™\‹š\Ó˜SŠÛYR[™^
-HÈÝ\œ™[ÛYR[™^ˆÛYR[™^Â‚ˆÚÝÓYÚ›ÞÛYJÝ\œ™[ÛYR[™^
-NÂˆYÚ›Þ˜Û\ÜÓ\Ý˜Y
-š\Ë[Ü[ˆŠNÂˆYÚ›ÞœÙ]]šX]J˜\šXKZY[ˆ‹™˜[ÙHŠNÂˆØÝ[Y[˜›ÙKœÝ[K›Ý™\™›ÝÈHšY[ˆŽÂˆÛÜÙP]Û‹™›ØÝ\Ê
-NÂˆJNÂˆJNÂ‚ˆÛÜÙP]Û‹˜Y]™[\Ý[™\Š˜ÛXÚÈ‹ÛÜÙSYÚ›Þ
-NÂˆ™]š[Ý\Ð]Û‹˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+  toggle.addEventListener("click", () => {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!isOpen));
 
-HOˆÛÕÓYÚ›ÞÛYJLJJNÂˆ™^]Û‹˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+    if (submenu) {
+      submenu.hidden = isOpen;
+    }
+  });
+});
 
-HOˆÛÕÓYÚ›ÞÛYJJJNÂ‚ˆYÚ›Þ˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
-]™[
-HOˆÂˆYˆ
-]™[\™Ù]OOHYÚ›Þ
-HÂˆÛÜÙSYÚ›Þ
+const lightbox = document.getElementById("lightbox");
 
-NÂˆBˆJNÂ‚ˆØÝ[Y[˜Y]™[\Ý[™\ŠšÙ^YÝÛˆ‹
-]™[
-HOˆÂˆYˆ
-]™[šÙ^HOOH‘\ØØ\Hˆ	‰ˆYÚ›Þ˜Û\ÜÓ\Ý˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÜÙSYÚ›Þ
+const slides = [
+  {
+    web: "/assets/photos/banihtse-29-web.jpg",
+    full: "/assets/photos/banihtse-29.jpg",
+    caption: "Sofia, Bulgaria, 2019",
+    label: "01 / Sofia, Bulgaria",
+    alt: "Analogue black and white photograph of a reflected street scene in Sofia",
+  },
+  {
+    web: "/assets/photos/untitled-11-web.jpg",
+    full: "/assets/photos/untitled-11.jpg",
+    caption: "Corfu, Greece, 2018",
+    label: "02 / Corfu, Greece, 2018",
+    alt: "Analogue black and white photograph of pigeons flying through a narrow street",
+  },
+  {
+    web: "./assets/photos/banihtse2-web.jpg",
+    full: "./assets/photos/banihtse2.jpg",
+    caption: "Sofia, Bulgaria, 2019",
+    label: "03 /  Sofia, Bulgaria, 2019",
+    alt: "Black and white street photograph showing pedestrians and reflections on a rainy street in Sofia",
+  },
+];
 
-NÂˆB‚ˆYˆ
-]™[šÙ^HOOH\œ›ÝÓYˆ	‰ˆYÚ›Þ˜Û\ÜÓ\Ý˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÕÓYÚ›ÞÛYJLJNÂˆB‚ˆYˆ
-]™[šÙ^HOOH\œ›ÝÔšYÚˆ	‰ˆYÚ›Þ˜Û\ÜÓ\Ý˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆÛÕÓYÚ›ÞÛYJJNÂˆBˆJNÂŸB‚™ØÝ[Y[œ]Y\žTÙ[XÝÜ[
-‹˜›ÛÚË]šY]Ù\ˆŠK™›Ü‘XXÚ
+const emptyImage =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 
-šY]Ù\ŠHOˆÂˆÛÛœÝYÙ\Ô]HšY]Ù\‹™]\Ù]œYÙ\ÎÂˆÛÛœÝÝ[YÙ\ÈH[X™\ŠšY]Ù\‹™]\Ù]œYÙPÛÝ[
-NÂˆÛÛœÝÝ]\ÈHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË\Ý]\×HŠNÂˆÛÛœÝÛÝ[\ˆHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚËXÛÝ[\—HŠNÂˆÛÛœÝYYÙHHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË\YÙK[YHŠNÂˆÛÛœÝšYÚYÙHHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË\YÙK\šYÚHŠNÂˆÛÛœÝ™]š[Ý\Ð]ÛˆHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË\™]—HŠNÂˆÛÛœÝ™^]ÛˆHšY]Ù\‹œ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[™^HŠNÂˆÛÛœÝ›ÛÚÓYÚ›ÞHØÝ[Y[™Ù][[Y[žRY
-˜›ÛÚÓYÚ›ÞŠNÂˆÛÛœÝ›ÛÚÓYÚ›Þ[XYÙHH›ÛÚÓYÚ›ÞËœ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[YÚ›ÞZ[XYÙWHŠNÂˆÛÛœÝ›ÛÚÓYÚ›ÞØ\[ÛˆH›ÛÚÓYÚ›ÞËœ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[YÚ›ÞXØ\[Û—HŠNÂˆÛÛœÝ›ÛÚÓYÚ›ÞÛÜÙHH›ÛÚÓYÚ›ÞËœ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[YÚ›ÞXÛÜÙWHŠNÂˆÛÛœÝ›ÛÚÓYÚ›Þ™]ˆH›ÛÚÓYÚ›ÞËœ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[YÚ›Þ\™]—HŠNÂˆÛÛœÝ›ÛÚÓYÚ›Þ™^H›ÛÚÓYÚ›ÞËœ]Y\žTÙ[XÝÜŠ–Ù]KX›ÛÚË[YÚ›Þ[™^HŠNÂ‚ˆYˆ
-\YÙ\Ô]]Ý[YÙ\È[YYÙH\šYÚYÙJHÂˆYˆ
-Ý]\ÊHÂˆÝ]\Ë^ÛÛ[H˜›ÛÚÈ™]šY]È[˜]˜Z[X›HŽÂˆB‚ˆ™]\›ŽÂˆB‚ˆ]Ü™XYÝ\HNÂˆ]\Ô™[™\š[™ÈH˜[ÙNÂˆ]^[™YYÙHHNÂ‚ˆ[˜Ý[ÛˆYÙTÛÝ\˜ÙJYÙS[X™\ŠHÂˆ™]\›ˆ	ÜYÙ\Ô]KÜYÙKIÔÝš[™ÊYÙS[X™\ŠKœYÝ\
-‹ŒŠ_KšœØÂˆB‚ˆ[˜Ý[ÛˆÙ]Ý]\Ê^
-HÂˆYˆ
-Ý]\ÊHÂˆÝ]\Ë^ÛÛ[H^ÂˆBˆB‚ˆ[˜Ý[Ûˆ\]PÛÝ[\Š
-HÂˆYˆ
-XÛÝ[\ŠHÂˆ™]\›ŽÂˆB‚ˆÛÛœÝÜ™XY[™HX]›Z[ŠÜ™XYÝ\
-ÈKÝ[YÙ\ÊNÂˆÛÝ[\‹^ÛÛ[H	ÜÜ™XYÝ\KIÜÜ™XY[™HÈ	ÝÝ[YÙ\ßXÂˆB‚ˆ[˜Ý[ÛˆÛX\”YÙJ[XYÙJHÂˆYˆ
-Z[XYÙJHÂˆ™]\›ŽÂˆB‚ˆ[XYÙKœ™[[Ý™P]šX]JœÜ˜ÈŠNÂˆ[XYÙKœ™[[Ý™P]šX]J˜\šXK[X™[ŠNÂˆ[XYÙKœ™[[Ý™P]šX]J™]K\YÙHŠNÂˆ[XYÙKœ™[[Ý™P]šX]JXš[™^ŠNÂˆ[XYÙKœ™[[Ý™P]šX]Jœ›ÛHŠNÂˆ[XYÙKšY[ˆHYNÂˆB‚ˆ[˜Ý[Ûˆ™[™\”YÙJYÙS[X™\‹[XYÙJHÂˆYˆ
-YÙS[X™\ˆˆÝ[YÙ\ÊHÂˆÛX\”YÙJ[XYÙJNÂˆ™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™J
-NÂˆB‚ˆ[XYÙKšY[ˆH˜[ÙNÂˆ[XYÙK˜[HÝ™Y]›Ýš[™ÈÝØ›ÛÚËYÙH	ÜYÙS[X™\ŸXÂˆ[XYÙKœÙ]]šX]J˜\šXK[X™[‹YÙH	ÜYÙS[X™\ŸX
-NÂˆ[XYÙK™]\Ù]œYÙHHÝš[™ÊYÙS[X™\ŠNÂˆ[XYÙKœÙ]]šX]JXš[™^‹ŒŠNÂˆ[XYÙKœÙ]]šX]Jœ›ÛH‹˜]ÛˆŠNÂ‚ˆ™]\›ˆ™]È›ÛZ\ÙJ
-™\ÛÛ™K™Z™XÝ
-HOˆÂˆ[XYÙK›Û›ØYH
+let currentSlideIndex = 0;
 
-HOˆ™\ÛÛ™J
-NÂˆ[XYÙK›Û™\œ›ÜˆH
+slides.forEach((slide) => {
+  const preload = new Image();
+  preload.src = slide.web;
+});
 
-HOˆ™Z™XÝ
-™]È\œ›ÜŠ[˜X›HÈØYYÙH	ÜYÙS[X™\ŸX
-JNÂˆ[XYÙKœÜ˜ÈHYÙTÛÝ\˜ÙJYÙS[X™\ŠNÂ‚ˆYˆ
-[XYÙK˜ÛÛ\]H	‰ˆ[XYÙK›˜]\˜[ÚYˆ
-HÂˆ™\ÛÛ™J
-NÂˆBˆJNÂˆB‚ˆ[˜Ý[Ûˆ™[™\‘^[™YYÙJYÙS[X™\ŠHÂˆYˆ
-X›ÛÚÓYÚ›Þ[XYÙHYÙS[X™\ˆHYÙS[X™\ˆˆÝ[YÙ\ÊHÂˆ™]\›ŽÂˆB‚ˆ^[™YYÙHHYÙS[X™\ŽÂˆ›ÛÚÓYÚ›Þ[XYÙK˜[HÝ™Y]›Ýš[™ÈÝØ›ÛÚËYÙH	ÜYÙS[X™\ŸXÂˆ›ÛÚÓYÚ›Þ[XYÙKœÜ˜ÈHYÙTÛÝ\˜ÙJYÙS[X™\ŠNÂ‚ˆYˆ
-›ÛÚÓYÚ›ÞØ\[ÛŠHÂˆ›ÛÚÓYÚ›ÞØ\[Û‹^ÛÛ[HYÙH	ÜYÙS[X™\ŸHÈ	ÝÝ[YÙ\ßXÂˆBˆB‚ˆ[˜Ý[ÛˆÜ[‘^[™YYÙJYÙS[X™\ŠHÂˆYˆ
-X›ÛÚÓYÚ›Þ
-HÂˆ™]\›ŽÂˆB‚ˆ›ÛÚÓYÚ›Þ˜Û\ÜÓ\Ý˜Y
-š\Ë[Ü[ˆŠNÂˆ›ÛÚÓYÚ›ÞœÙ]]šX]J˜\šXKZY[ˆ‹™˜[ÙHŠNÂˆØÝ[Y[˜›ÙKœÝ[K›Ý™\™›ÝÈHšY[ˆŽÂˆ™[™\‘^[™YYÙJYÙS[X™\ŠNÂˆ›ÛÚÓYÚ›ÞÛÜÙOË™›ØÝ\Ê
-NÂˆB‚ˆ[˜Ý[ÛˆÛÜÙQ^[™YYÙJ
-HÂˆYˆ
-X›ÛÚÓYÚ›Þ
-HÂˆ™]\›ŽÂˆB‚ˆ›ÛÚÓYÚ›Þ˜Û\ÜÓ\Ýœ™[[Ý™Jš\Ë[Ü[ˆŠNÂˆ›ÛÚÓYÚ›ÞœÙ]]šX]J˜\šXKZY[ˆ‹YHŠNÂˆØÝ[Y[˜›ÙKœÝ[K›Ý™\™›ÝÈHˆŽÂˆ›ÛÚÓYÚ›Þ[XYÙOËœ™[[Ý™P]šX]JœÜ˜ÈŠNÂˆB‚ˆ[˜Ý[Ûˆ[Ý™Q^[™YYÙJ\™XÝ[ÛŠHÂˆÛÛœÝ™^YÙHHX]›Z[ŠX]›X^
-^[™YYÙH
-È\™XÝ[Û‹JKÝ[YÙ\ÊNÂˆ™[™\‘^[™YYÙJ™^YÙJNÂˆB‚ˆ\Þ[˜È[˜Ý[Ûˆ™[™\”Ü™XY
+if (lightbox) {
+  const lightboxImage = lightbox.querySelector("img");
+  const lightboxCaption = lightbox.querySelector("figcaption");
+  const closeButton = lightbox.querySelector(".lightbox-close");
+  const previousButton = lightbox.querySelector(".lightbox-prev");
+  const nextButton = lightbox.querySelector(".lightbox-next");
+  let lightboxSlideIndex = currentSlideIndex;
 
-HÂˆYˆ
-\Ô™[™\š[™ÊHÂˆ™]\›ŽÂˆB‚ˆ\Ô™[™\š[™ÈHYNÂˆÙ]Ý]\Ê›ØY[™ÈÜ™XYŠNÂˆ\]PÛÝ[\Š
-NÂ‚ˆžHÂˆ]ØZ]›ÛZ\ÙK˜[
-Âˆ™[™\”YÙJÜ™XYÝ\YYÙJKˆ™[™\”YÙJÜ™XYÝ\
-ÈKšYÚYÙJKˆJNÂˆÙ]Ý]\Ê™ÝX›HYÙHšY]ÈŠNÂˆHØ]Ú
-\œ›ÜŠHÂˆÙ]Ý]\Ê˜›ÛÚÈ™]šY]È[˜]˜Z[X›HŠNÂˆHš[˜[HÂˆ\Ô™[™\š[™ÈH˜[ÙNÂˆBˆB‚ˆ™]š[Ý\Ð]ÛË˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+  function showLightboxSlide(index) {
+    const slide = slides[index];
 
-HOˆÂˆYˆ
-Ü™XYÝ\HH\Ô™[™\š[™ÊHÂˆ™]\›ŽÂˆB‚ˆÜ™XYÝ\HX]›X^
-KÜ™XYÝ\HŠNÂˆ™[™\”Ü™XY
+    if (!slide) {
+      return;
+    }
 
-NÂˆJNÂ‚ˆ™^]ÛË˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+    lightboxSlideIndex = index;
+    lightboxImage.alt = slide.alt;
+    lightboxCaption.textContent = slide.caption;
+    lightboxImage.onerror = () => {
+      const fallbackImage = document.querySelector(`.photo-open[data-slide="${index}"] img`);
+      const fallbackSource = fallbackImage?.currentSrc || fallbackImage?.src;
 
-HOˆÂˆYˆ
-Ü™XYÝ\
-ÈˆˆÝ[YÙ\È\Ô™[™\š[™ÊHÂˆ™]\›ŽÂˆB‚ˆÜ™XYÝ\
-ÏHŽÂˆ™[™\”Ü™XY
+      lightboxImage.onerror = null;
 
-NÂˆJNÂ‚ˆÛYYÙKšYÚYÙWK™›Ü‘XXÚ
+      if (fallbackSource) {
+        lightboxImage.src = fallbackSource;
+      }
+    };
+    lightboxImage.src = slide.full;
+  }
 
-[XYÙJHOˆÂˆ[XYÙK˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+  function goToLightboxSlide(direction) {
+    const nextIndex = (lightboxSlideIndex + direction + slides.length) % slides.length;
+    showLightboxSlide(nextIndex);
+  }
 
-HOˆÂˆÛÛœÝYÙS[X™\ˆH[X™\Š[XYÙK™]\Ù]œYÙJNÂ‚ˆYˆ
-S[X™\‹š\Ó˜SŠYÙS[X™\ŠJHÂˆÜ[‘^[™YYÙJYÙS[X™\ŠNÂˆBˆJNÂ‚ˆ[XYÙK˜Y]™[\Ý[™\ŠšÙ^YÝÛˆ‹
-]™[
-HOˆÂˆYˆ
-]™[šÙ^HOOH‘[\ˆˆ	‰ˆ]™[šÙ^HOOHˆŠHÂˆ™]\›ŽÂˆB‚ˆ]™[œ™]™[Y˜][
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImage.onerror = null;
+    lightboxImage.src = emptyImage;
+    document.body.style.overflow = "";
+  }
 
-NÂˆÛÛœÝYÙS[X™\ˆH[X™\Š[XYÙK™]\Ù]œYÙJNÂ‚ˆYˆ
-S[X™\‹š\Ó˜SŠYÙS[X™\ŠJHÂˆÜ[‘^[™YYÙJYÙS[X™\ŠNÂˆBˆJNÂˆJNÂ‚ˆ›ÛÚÓYÚ›ÞÛÜÙOË˜Y]™[\Ý[™\Š˜ÛXÚÈ‹ÛÜÙQ^[™YYÙJNÂˆ›ÛÚÓYÚ›Þ™]Ë˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+  document.querySelectorAll(".photo-open, .meta-open").forEach((button) => {
+    button.addEventListener("click", () => {
+      const slideIndex = Number(button.dataset.slide ?? currentSlideIndex);
+      currentSlideIndex = Number.isNaN(slideIndex) ? currentSlideIndex : slideIndex;
 
-HOˆ[Ý™Q^[™YYÙJLJJNÂˆ›ÛÚÓYÚ›Þ™^Ë˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
+      showLightboxSlide(currentSlideIndex);
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeButton.focus();
+    });
+  });
 
-HOˆ[Ý™Q^[™YYÙJJJNÂˆ›ÛÚÓYÚ›ÞË˜Y]™[\Ý[™\Š˜ÛXÚÈ‹
-]™[
-HOˆÂˆYˆ
-]™[\™Ù]OOH›ÛÚÓYÚ›Þ
-HÂˆÛÜÙQ^[™YYÙJ
-NÂˆBˆJNÂ‚ˆØÝ[Y[˜Y]™[\Ý[™\ŠšÙ^YÝÛˆ‹
-]™[
-HOˆÂˆYˆ
-X›ÛÚÓYÚ›ÞË˜Û\ÜÓ\Ý˜ÛÛZ[œÊš\Ë[Ü[ˆŠJHÂˆ™]\›ŽÂˆB‚ˆYˆ
-]™[šÙ^HOOH‘\ØØ\HŠHÂˆÛÜÙQ^[™YYÙJ
-NÂˆB‚ˆYˆ
-]™[šÙ^HOOH\œ›ÝÓYŠHÂˆ[Ý™Q^[™YYÙJLJNÂˆB‚ˆYˆ
-]™[šÙ^HOOH\œ›ÝÔšYÚŠHÂˆ[Ý™Q^[™YYÙJJNÂˆBˆJNÂ‚ˆ™[™\”Ü™XY
+  closeButton.addEventListener("click", closeLightbox);
+  previousButton.addEventListener("click", () => goToLightboxSlide(-1));
+  nextButton.addEventListener("click", () => goToLightboxSlide(1));
 
-NÂŸJNÂ
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lightbox.classList.contains("is-open")) {
+      closeLightbox();
+    }
+
+    if (event.key === "ArrowLeft" && lightbox.classList.contains("is-open")) {
+      goToLightboxSlide(-1);
+    }
+
+    if (event.key === "ArrowRight" && lightbox.classList.contains("is-open")) {
+      goToLightboxSlide(1);
+    }
+  });
+}
+
+document.querySelectorAll(".book-viewer").forEach((viewer) => {
+  const pagesPath = viewer.dataset.pages;
+  const totalPages = Number(viewer.dataset.pageCount);
+  const status = viewer.querySelector("[data-book-status]");
+  const counter = viewer.querySelector("[data-book-counter]");
+  const leftPage = viewer.querySelector("[data-book-page-left]");
+  const rightPage = viewer.querySelector("[data-book-page-right]");
+  const previousButton = viewer.querySelector("[data-book-prev]");
+  const nextButton = viewer.querySelector("[data-book-next]");
+  const bookLightbox = document.getElementById("bookLightbox");
+  const bookLightboxImage = bookLightbox?.querySelector("[data-book-lightbox-image]");
+  const bookLightboxCaption = bookLightbox?.querySelector("[data-book-lightbox-caption]");
+  const bookLightboxClose = bookLightbox?.querySelector("[data-book-lightbox-close]");
+  const bookLightboxPrev = bookLightbox?.querySelector("[data-book-lightbox-prev]");
+  const bookLightboxNext = bookLightbox?.querySelector("[data-book-lightbox-next]");
+
+  if (!pagesPath || !totalPages || !leftPage || !rightPage) {
+    if (status) {
+      status.textContent = "book preview unavailable";
+    }
+
+    return;
+  }
+
+  let spreadStart = 1;
+  let isRendering = false;
+  let expandedPage = 1;
+
+  function pageSource(pageNumber) {
+    return `${pagesPath}/page-${String(pageNumber).padStart(2, "0")}.jpg`;
+  }
+
+  function setStatus(text) {
+    if (status) {
+      status.textContent = text;
+    }
+  }
+
+  function updateCounter() {
+    if (!counter) {
+      return;
+    }
+
+    const spreadEnd = Math.min(spreadStart + 1, totalPages);
+    counter.textContent = `${spreadStart}-${spreadEnd} / ${totalPages}`;
+  }
+
+  function clearPage(image) {
+    if (!image) {
+      return;
+    }
+
+    image.removeAttribute("src");
+    image.removeAttribute("aria-label");
+    image.removeAttribute("data-page");
+    image.removeAttribute("tabindex");
+    image.removeAttribute("role");
+    image.hidden = true;
+  }
+
+  function renderPage(pageNumber, image) {
+    if (pageNumber > totalPages) {
+      clearPage(image);
+      return Promise.resolve();
+    }
+
+    image.hidden = false;
+    image.alt = `Street Roving photobook, page ${pageNumber}`;
+    image.setAttribute("aria-label", `page ${pageNumber}`);
+    image.dataset.page = String(pageNumber);
+    image.setAttribute("tabindex", "0");
+    image.setAttribute("role", "button");
+
+    return new Promise((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error(`Unable to load page ${pageNumber}`));
+      image.src = pageSource(pageNumber);
+
+      if (image.complete && image.naturalWidth > 0) {
+        resolve();
+      }
+    });
+  }
+
+  function renderExpandedPage(pageNumber) {
+    if (!bookLightboxImage || pageNumber < 1 || pageNumber > totalPages) {
+      return;
+    }
+
+    expandedPage = pageNumber;
+    bookLightboxImage.alt = `Street Roving photobook, page ${pageNumber}`;
+    bookLightboxImage.src = pageSource(pageNumber);
+
+    if (bookLightboxCaption) {
+      bookLightboxCaption.textContent = `page ${pageNumber} / ${totalPages}`;
+    }
+  }
+
+  function openExpandedPage(pageNumber) {
+    if (!bookLightbox) {
+      return;
+    }
+
+    bookLightbox.classList.add("is-open");
+    bookLightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    renderExpandedPage(pageNumber);
+    bookLightboxClose?.focus();
+  }
+
+  function closeExpandedPage() {
+    if (!bookLightbox) {
+      return;
+    }
+
+    bookLightbox.classList.remove("is-open");
+    bookLightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    bookLightboxImage?.removeAttribute("src");
+  }
+
+  function moveExpandedPage(direction) {
+    const nextPage = Math.min(Math.max(expandedPage + direction, 1), totalPages);
+    renderExpandedPage(nextPage);
+  }
+
+  async function renderSpread() {
+    if (isRendering) {
+      return;
+    }
+
+    isRendering = true;
+    setStatus("loading spread");
+    updateCounter();
+
+    try {
+      await Promise.all([
+        renderPage(spreadStart, leftPage),
+        renderPage(spreadStart + 1, rightPage),
+      ]);
+      setStatus("double page view");
+    } catch (error) {
+      setStatus("book preview unavailable");
+    } finally {
+      isRendering = false;
+    }
+  }
+
+  previousButton?.addEventListener("click", () => {
+    if (spreadStart <= 1 || isRendering) {
+      return;
+    }
+
+    spreadStart = Math.max(1, spreadStart - 2);
+    renderSpread();
+  });
+
+  nextButton?.addEventListener("click", () => {
+    if (spreadStart + 2 > totalPages || isRendering) {
+      return;
+    }
+
+    spreadStart += 2;
+    renderSpread();
+  });
+
+  [leftPage, rightPage].forEach((image) => {
+    image.addEventListener("click", () => {
+      const pageNumber = Number(image.dataset.page);
+
+      if (!Number.isNaN(pageNumber)) {
+        openExpandedPage(pageNumber);
+      }
+    });
+
+    image.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+
+      event.preventDefault();
+      const pageNumber = Number(image.dataset.page);
+
+      if (!Number.isNaN(pageNumber)) {
+        openExpandedPage(pageNumber);
+      }
+    });
+  });
+
+  bookLightboxClose?.addEventListener("click", closeExpandedPage);
+  bookLightboxPrev?.addEventListener("click", () => moveExpandedPage(-1));
+  bookLightboxNext?.addEventListener("click", () => moveExpandedPage(1));
+  bookLightbox?.addEventListener("click", (event) => {
+    if (event.target === bookLightbox) {
+      closeExpandedPage();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!bookLightbox?.classList.contains("is-open")) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      closeExpandedPage();
+    }
+
+    if (event.key === "ArrowLeft") {
+      moveExpandedPage(-1);
+    }
+
+    if (event.key === "ArrowRight") {
+      moveExpandedPage(1);
+    }
+  });
+
+  renderSpread();
+});
