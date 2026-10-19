@@ -524,8 +524,13 @@ img {
 }
 
 .federico-home .project-index {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 36px;
+  row-gap: 24px;
+  align-items: start;
   width: 100%;
-  min-height: 690px;
+  min-height: 0;
   margin: 0;
 }
 
@@ -541,26 +546,34 @@ img {
 }
 
 .federico-home .project-entry-primary {
-  top: 190px;
-  left: 0;
-  width: calc(50% - 18px);
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  margin-top: 190px;
 }
 
 .federico-home .project-entry-secondary {
-  top: 160px;
-  right: 0;
-  width: calc(50% - 18px);
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 100%;
+  margin-top: 160px;
 }
 
 .federico-home .project-entry-tertiary {
-  top: 415px;
-  left: 50%;
+  position: relative;
+  top: auto;
+  left: auto;
+  grid-column: 1 / -1;
+  justify-self: center;
   width: min(58%, 540px);
-  transform: translateX(-50%);
+  margin-top: 0;
+  transform: none;
 }
 
 .federico-home .project-index {
-  min-height: 850px;
+  min-height: 0;
 }
 
 .federico-home .project-photo {
@@ -1049,6 +1062,8 @@ h1 {
   }
 
   .federico-home .project-index {
+    grid-template-columns: 1fr;
+    row-gap: 0;
     min-height: 0;
     margin-bottom: 54px;
   }
@@ -1064,8 +1079,10 @@ h1 {
   .federico-home .project-entry-secondary,
   .federico-home .project-entry-tertiary {
     position: static;
+    grid-column: 1;
     width: 100%;
     margin-bottom: 34px;
+    margin-top: 0;
     transform: none;
   }
 
