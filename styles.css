@@ -230,7 +230,7 @@ img {
 .federico-nav {
   position: fixed;
   top: 36px;
-  right: 54px;
+  right: 64px;
   z-index: 30;
   display: flex;
   flex-wrap: nowrap;
@@ -239,7 +239,7 @@ img {
   max-width: none;
   padding-top: 10px;
   color: #3f3f3f;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
