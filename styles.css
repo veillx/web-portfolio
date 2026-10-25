@@ -536,7 +536,7 @@ img {
 
 .federico-home .home-note {
   position: absolute;
-  top: -20px;
+  top: 5px;
   left: 4px;
   max-width: none;
   width: max-content;
