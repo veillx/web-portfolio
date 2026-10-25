@@ -536,7 +536,7 @@ img {
 
 .federico-home .home-note {
   position: absolute;
-  top: 64px;
+  top: -20px;
   left: 4px;
   max-width: none;
   width: max-content;
@@ -550,7 +550,7 @@ img {
   top: auto;
   left: auto;
   width: 100%;
-  margin-top: 190px;
+  margin-top: 100px;
 }
 
 .federico-home .project-entry-secondary {
@@ -558,7 +558,7 @@ img {
   top: auto;
   right: auto;
   width: 100%;
-  margin-top: 160px;
+  margin-top: 70px;
 }
 
 .federico-home .project-entry-tertiary {
