@@ -342,6 +342,10 @@ img {
   line-height: 1.25;
 }
 
+.federico-inner .site-footer {
+  width: calc(100vw - 68px);
+}
+
 .inner-content {
   max-width: 760px;
   padding-top: 74px;
@@ -1029,6 +1033,10 @@ h1 {
 }
 
 @media (max-width: 620px) {
+  .federico-inner .site-footer {
+    width: calc(100vw - 44px);
+  }
+
   .federico-page {
     padding: 22px;
   }
